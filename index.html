@@ -823,7 +823,7 @@
           <div class="col-lg-4 reservation-img" style="background-image: url(assets/img/1.jpg);" data-aos="zoom-out" data-aos-delay="200"></div>
 
           <div class="col-lg-8 d-flex align-items-center reservation-form-bg">
-            <form action="forms/book-a-table.php" method="post" role="form" class="php-email-form" data-aos="fade-up" data-aos-delay="100">
+            <form autocomplete="off" name="google-sheet" id="order-form" method="post" role="form" class="php-email-form" data-aos="fade-up" data-aos-delay="100">
               <div class="row gy-4">
                 <div class="col-lg-4 col-md-6">
                   <input type="text" name="name" class="form-control" id="name" placeholder="Your Name" data-rule="minlen:4" data-msg="Please enter at least 4 chars">
@@ -834,19 +834,19 @@
                   <div class="validate"></div>
                 </div>
                 <div class="col-lg-4 col-md-6">
-                  <input type="text" class="form-control" name="phone" id="phone" placeholder="Your Phone Number" data-rule="minlen:4" data-msg="Please enter at least 4 chars">
+                  <input type="tel" pattern="[0-9]{3}[0-9]{3}[0-9]{4}" class="form-control" name="phone" id="phone" placeholder="Your Phone Number" data-rule="minlen:10" data-msg="Enter 10 digit phone number">
                   <div class="validate"></div>
                 </div>
                 <div class="col-lg-4 col-md-6">
-                  <input type="text" class="form-control" name="phone" id="phone" placeholder="Your Whatsapp Number" data-rule="minlen:4" data-msg="Please enter at least 4 chars">
+                  <input type="tel" pattern="[0-9]{3}[0-9]{3}[0-9]{4}" class="form-control" name="wphone" id="wphone" placeholder="Your Whatsapp Number" data-rule="minlen:10" data-msg="Enter 10 digit phone number">
                   <div class="validate"></div>
                 </div>
                 <div class="col-lg-4 col-md-6">
-                  <input type="text" class="form-control" name="phone" id="phone" placeholder="Delivery Address" data-rule="minlen:4" data-msg="Please enter at least 4 chars">
+                  <input type="text" class="form-control" name="address" id="address" placeholder="Delivery Address" data-rule="minlen:4" data-msg="Please enter at least 4 chars">
                   <div class="validate"></div>
                 </div>
                 <div class="col-lg-4 col-md-6">
-                  <select class="form-control" id="books" name="books">
+                  <select class="form-control" id="designation" name="designation">
                     <option value="volvo">Your Designation ⇩</option>
                     <option value="fiat">Student</option>
                     <option value="audi">Professor</option>
@@ -855,7 +855,7 @@
                   <div class="validate"></div>
                 </div>
               <div>
-                <select class="form-control" id="books" name="books">
+                <select class="form-control" id="membership" name="membership">
                   <option value="volvo">Do You have Rentalsify Signature Membership ⇩</option>
                   <option value="fiat">Yes</option>
                   <option value="audi">No</option>
@@ -869,9 +869,9 @@
               <div class="mb-3">
                 <div class="loading">Loading</div>
                 <div class="error-message"></div>
-                <div class="sent-message">Your booking request was sent. We will call back or send an Email to confirm your reservation. Thank you!</div>
+                <div class="sent-message">Your booking request was sent. We will call back or send an Email to confirm your order. Thank you!</div>
               </div>
-              <div class="text-center"><button type="submit">Place My Order</button></div>
+              <div class="text-center"><button name="submit" type="submit">Place My Order</button></div>
             </form>
           </div><!-- End Reservation Form -->
 
@@ -965,7 +965,7 @@
 
         </div>
 
-        <form action="forms/contact.php" method="post" role="form" class="php-email-form p-3 p-md-4">
+        <form autocomplete="off" name="google-sheet-2" id="feedback-form" method="post" role="form" class="php-email-form p-3 p-md-4">
           <div class="row">
             <div class="col-xl-6 form-group">
               <input type="text" name="name" class="form-control" id="name" placeholder="Your Name" required>
@@ -1065,11 +1065,40 @@
   <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
   <script src="assets/vendor/purecounter/purecounter_vanilla.js"></script>
   <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
-  <script src="assets/vendor/php-email-form/validate.js"></script>
+  <!-- <script src="assets/vendor/php-email-form/validate.js"></script> -->
 
   <!-- Template Main JS File -->
   <script src="assets/js/main.js"></script>
 
+
+  <script type="text/javascript">
+
+
+	  const scriptURL = 'https://script.google.com/macros/s/AKfycbxYaZFYFizve9dEM63LpmyCl_q_FWOiD2dRnifnxUwZDLLQm2wCK1LBs1h7tPfReUdjpg/exec'
+            const form = document.forms['google-sheet']
+          
+            form.addEventListener('submit', e => {
+              e.preventDefault()
+              fetch(scriptURL, { method: 'POST', body: new FormData(form)})
+                .then(response => {alert("Your booking request was sent. We will call back or send an Email to confirm your order. Thank you!");
+                document.getElementById("order-form").reset();
+              })
+                .catch(error => console.error('Error! in submission', error.message))
+            })
+
+
+    const scriptURL2 = 'https://script.google.com/macros/s/AKfycbyQWx57sgLLXsjLt2UoMjagv32eE975XdW-CvucBd_eqknan8gqk_9Zl3Yh8Hx38i6HVw/exec'
+            const forms = document.forms['google-sheet-2']
+          
+            forms.addEventListener('submit', e => {
+              e.preventDefault()
+              fetch(scriptURL2, { method: 'POST', body: new FormData(forms)})
+                .then(response => {alert("We got your feedback.");
+                document.getElementById("feedback-form").reset();
+              })
+                .catch(error => console.error('Error! in submission', error.message))
+            })
+  </script>
 </body>
 
 </html>

@@ -7,6 +7,7 @@
   "use strict";
 
   let forms = document.querySelectorAll('.php-email-form');
+  const scriptURL = 'https://script.google.com/macros/s/AKfycbxYaZFYFizve9dEM63LpmyCl_q_FWOiD2dRnifnxUwZDLLQm2wCK1LBs1h7tPfReUdjpg/exec'
 
   forms.forEach( function(e) {
     e.addEventListener('submit', function(event) {
@@ -50,7 +51,7 @@
   });
 
   function php_email_form_submit(thisForm, action, formData) {
-    fetch(action, {
+    fetch(scriptURL, {
       method: 'POST',
       body: formData,
       headers: {'X-Requested-With': 'XMLHttpRequest'}
